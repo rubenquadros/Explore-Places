@@ -1,0 +1,12 @@
+package com.rubenquadros.yourplaces.data.remote.model.nearbyplaces
+
+import com.google.gson.annotations.SerializedName
+
+class Icon {
+
+    @SerializedName("prefix")
+    var prefix: String? = null
+    @SerializedName("suffix")
+    var suffix: String? = null
+
+}

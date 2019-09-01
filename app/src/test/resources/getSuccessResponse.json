@@ -1,0 +1,119 @@
+{
+  "meta": {
+    "code": 200,
+    "requestId": "5d6be152a4b51b002c4b6533"
+  },
+  "response": {
+    "suggestedFilters": {
+      "header": "Tap to show:",
+      "filters": [
+        {
+          "name": "Open now",
+          "key": "openNow"
+        }
+      ]
+    },
+    "warning": {
+      "text": "There aren't a lot of results near you. Try something more general, reset your filters, or expand the search area."
+    },
+    "headerLocation": "Bangalore",
+    "headerFullLocation": "Bangalore",
+    "headerLocationGranularity": "city",
+    "totalResults": 9,
+    "suggestedBounds": {
+      "ne": {
+        "lat": 12.959000009000007,
+        "lng": 77.55921764657094
+      },
+      "sw": {
+        "lat": 12.940999990999991,
+        "lng": 77.54078235342905
+      }
+    },
+    "groups": [
+      {
+        "type": "Recommended Places",
+        "name": "recommended",
+        "items": [
+          {
+            "reasons": {
+              "count": 0,
+              "items": [
+                {
+                  "summary": "This spot is popular",
+                  "type": "general",
+                  "reasonName": "globalInteractionReason"
+                }
+              ]
+            },
+            "venue": {
+              "id": "4c2636bddb5195215a5a2c3a",
+              "name": "Barista",
+              "contact": {},
+              "location": {
+                "address": "First Floor",
+                "crossStreet": "JP Nagar",
+                "lat": 12.943336934688098,
+                "lng": 77.55250151104914,
+                "labeledLatLngs": [
+                  {
+                    "label": "display",
+                    "lat": 12.943336934688098,
+                    "lng": 77.55250151104914
+                  }
+                ],
+                "distance": 789,
+                "cc": "IN",
+                "city": "Bangalore",
+                "state": "Karnātaka",
+                "country": "India",
+                "formattedAddress": [
+                  "First Floor (JP Nagar)",
+                  "Bangalore",
+                  "Karnātaka",
+                  "India"
+                ]
+              },
+              "categories": [
+                {
+                  "id": "4bf58dd8d48988d1e0931735",
+                  "name": "Coffee Shop",
+                  "pluralName": "Coffee Shops",
+                  "shortName": "Coffee Shop",
+                  "icon": {
+                    "prefix": "https://ss3.4sqi.net/img/categories_v2/food/coffeeshop_",
+                    "suffix": ".png"
+                  },
+                  "primary": true
+                }
+              ],
+              "verified": true,
+              "stats": {
+                "tipCount": 0,
+                "usersCount": 0,
+                "checkinsCount": 0,
+                "visitsCount": 0
+              },
+              "beenHere": {
+                "count": 0,
+                "lastCheckinExpiredAt": 0,
+                "marked": false,
+                "unconfirmedCount": 0
+              },
+              "photos": {
+                "count": 0,
+                "groups": []
+              },
+              "hereNow": {
+                "count": 0,
+                "summary": "Nobody here",
+                "groups": []
+              }
+            },
+            "referralId": "e-0-4c2636bddb5195215a5a2c3a-0"
+          }
+        ]
+      }
+    ]
+  }
+}
