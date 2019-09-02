@@ -33,6 +33,10 @@ constructor(private val placesRepository: PlacesRepository,
 
     fun getErrorResponse() = error
 
+    fun getCurrentLocation() {
+
+    }
+
     fun setLatLng(latLong: String) {
         this.latLng = latLong
     }

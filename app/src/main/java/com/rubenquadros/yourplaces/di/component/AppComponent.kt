@@ -7,8 +7,8 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(modules = [ApiModule::class,DbModule::class,
-            RepositoryModule::class, RxJavaModule::class,
-            ViewModelModule::class])
+            GoogleMapsModule::class,RepositoryModule::class,
+            RxJavaModule::class,ViewModelModule::class])
 interface AppComponent {
     fun inject(baseActivity: BaseActivity)
 }

@@ -3,10 +3,7 @@ package com.rubenquadros.yourplaces.base
 import android.app.Application
 import com.rubenquadros.yourplaces.di.component.AppComponent
 import com.rubenquadros.yourplaces.di.component.DaggerAppComponent
-import com.rubenquadros.yourplaces.di.module.ApiModule
-import com.rubenquadros.yourplaces.di.module.DbModule
-import com.rubenquadros.yourplaces.di.module.RepositoryModule
-import com.rubenquadros.yourplaces.di.module.RxJavaModule
+import com.rubenquadros.yourplaces.di.module.*
 import com.rubenquadros.yourplaces.utils.ApplicationConstants
 
 open class BaseApplication: Application() {
@@ -22,6 +19,7 @@ open class BaseApplication: Application() {
         DaggerAppComponent.builder()
             .apiModule(ApiModule(ApplicationConstants.BASE_URL, this))
             .dbModule(DbModule(this))
+            .googleMapsModule(GoogleMapsModule(this))
             .repositoryModule(RepositoryModule())
             .rxJavaModule(RxJavaModule())
             .build()
