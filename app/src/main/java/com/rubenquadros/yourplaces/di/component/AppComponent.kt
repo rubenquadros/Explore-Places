@@ -6,8 +6,8 @@ import dagger.Component
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = [ApiModule::class,DbModule::class,
-            GoogleMapsModule::class,RepositoryModule::class,
+@Component(modules = [ApiModule::class,ApplicationModule::class,
+            DbModule::class,RepositoryModule::class,
             RxJavaModule::class,ViewModelModule::class])
 interface AppComponent {
     fun inject(baseActivity: BaseActivity)

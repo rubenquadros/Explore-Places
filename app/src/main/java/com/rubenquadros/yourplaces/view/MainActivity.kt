@@ -3,6 +3,7 @@ package com.rubenquadros.yourplaces.view
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.view.WindowManager
 import com.rubenquadros.yourplaces.R
 import com.rubenquadros.yourplaces.base.BaseActivity
 
@@ -15,6 +16,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun startSplash() {
+        window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         Handler().postDelayed({
             startActivity(Intent(this, PlacesActivity::class.java))
             finish()

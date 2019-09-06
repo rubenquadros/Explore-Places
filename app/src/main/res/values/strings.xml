@@ -2,4 +2,11 @@
     <string name="app_name">Your Places</string>
     <string name="ok">OK</string>
     <string name="allow_gps">Please switch on your GPS so that we can serve you better!</string>
+    <string name="search_hint">Search places</string>
+    <string name="nearby_places">Nearby places</string>
+    <string name="err_search_place_title">Place not found</string>
+    <string name="err_search_place">No results found. Try searching for something else.</string>
+    <string name="no_net_title">No Internet</string>
+    <string name="no_net">It seems you are not connected to the internet. Please connect to the internet and try again.</string>
+    <string name="no_net_toast">It seems you are not connected to the internet. Please connect to the internet to updated places</string>
 </resources>

@@ -8,5 +8,8 @@ class ApplicationConstants {
         const val SUBSCRIBER_ON = "SubscribeOn"
         const val OBSERVER_ON = "ObserveOn"
         const val REQUEST_CODE_GPS = 10001
+        const val REQUEST_CHECK_SETTINGS_GPS = 10002
+        const val STATUS_OK = 200L
+        const val ERROR = "Error"
     }
 }

@@ -1,39 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.PlacesActivity">
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    <include layout="@layout/content_places_activity" />
 
-    <data>
+    <!-- Adding bottom sheet after main content -->
+    <include layout="@layout/places_bottom_sheet" />
 
-        <variable
-            name="placesHandler"
-            type="com.rubenquadros.yourplaces.viewmodel.PlacesViewModel" />
-    </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/parent"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.PlacesActivity">
-
-        <fragment
-            android:id="@+id/mapsFragment"
-            android:name="com.google.android.gms.maps.SupportMapFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <SearchView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/mapsFragment" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

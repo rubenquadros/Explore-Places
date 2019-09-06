@@ -18,8 +18,8 @@ open class BaseApplication: Application() {
     protected open fun initDagger(): AppComponent =
         DaggerAppComponent.builder()
             .apiModule(ApiModule(ApplicationConstants.BASE_URL, this))
+            .applicationModule(ApplicationModule(this))
             .dbModule(DbModule(this))
-            .googleMapsModule(GoogleMapsModule(this))
             .repositoryModule(RepositoryModule())
             .rxJavaModule(RxJavaModule())
             .build()

@@ -4,6 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProviders
 import com.rubenquadros.yourplaces.base.BaseTest
+import com.rubenquadros.yourplaces.data.local.dao.PlacesDAO
+import com.rubenquadros.yourplaces.data.local.entity.PlacesEntity
 import com.rubenquadros.yourplaces.utils.MockUtils
 import com.rubenquadros.yourplaces.viewmodel.PlacesViewModel
 import org.junit.Before
@@ -24,6 +26,7 @@ class PlacesTest: BaseTest() {
 
     private lateinit var activity: FragmentActivity
     private lateinit var placesViewModel: PlacesViewModel
+    private lateinit var placesDAO: PlacesDAO
 
     @Rule
     @JvmField
@@ -34,6 +37,7 @@ class PlacesTest: BaseTest() {
         super.setup()
         this.activity = Robolectric.setupActivity(FragmentActivity::class.java)
         this.placesViewModel = ViewModelProviders.of(this.activity, viewModelFactory)[PlacesViewModel::class.java]
+        this.placesDAO = placesDatabase.placesDAO()
     }
 
     @Test
@@ -56,6 +60,43 @@ class PlacesTest: BaseTest() {
         assertEquals(null, this.placesViewModel.getNearbyPlacesResponse().value, "Response must be null because of HTTP error")
         assertEquals(false, this.placesViewModel.isLoading.value, "Should be reset to 'false' because stream ended")
         assertNotEquals(null, this.placesViewModel.getErrorResponse().value, "Error value must not be empty")
+    }
+
+    @Test
+    fun insertAndRetrievePlacesSuccess() {
+        placesDAO.insertAll(MockUtils.getPlacesEntity())
+        val places = getValue(placesDAO.getPlaces())
+        assertEquals(MockUtils.getPlacesEntity()[0].name, places.name, "Data should be successfully inserted and retrieved")
+    }
+
+    @Test
+    fun deletePlacesSuccess() {
+        placesDAO.deleteAll()
+        assertEquals(0, placesDAO.getPlaces().size, "Data should be successfully deleted")
+    }
+
+    @Test
+    fun searchPlacesSuccess() {
+        this.mockResponse("getSearchSuccessResponse.json",HttpURLConnection.HTTP_OK)
+        assertEquals(null, this.placesViewModel.getSearchPlacesResponse()?.value, "Response should be null because stream is not started yet")
+        this.placesViewModel.searchPlaces("koramangala")
+        assertEquals(MockUtils.searchPlacesResponse().response?.venues?.size, this.placesViewModel.getSearchPlacesResponse()?.value?.response?.venues?.size, "Response must be fetched")
+        assertEquals(false, this.placesViewModel.isLoading.value, "Should be reset to 'false' because stream ended")
+        assertEquals(null, this.placesViewModel.getSearchErrorResponse().value, "No error must be founded")
+    }
+
+    @Test
+    fun searchPlacesFail() {
+        this.mockResponse("getSearchSuccessResponse.json",HttpURLConnection.HTTP_BAD_GATEWAY)
+        assertEquals(null, this.placesViewModel.getSearchPlacesResponse()?.value, "Response should be null because stream is not started yet")
+        this.placesViewModel.searchPlaces("koramangala")
+        assertEquals(null, this.placesViewModel.getSearchPlacesResponse()?.value, "Response must be null because of HTTP error")
+        assertEquals(false, this.placesViewModel.isLoading.value, "Should be reset to 'false' because stream ended")
+        assertNotEquals(null, this.placesViewModel.getSearchErrorResponse().value, "Error value must not be empty")
+    }
+
+    private fun getValue(places: List<PlacesEntity>): PlacesEntity {
+        return places[0]
     }
 
     override fun isMockServerEnabled(): Boolean = true

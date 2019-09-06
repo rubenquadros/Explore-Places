@@ -1,7 +1,9 @@
 package com.rubenquadros.yourplaces.base
 
 import androidx.fragment.app.FragmentActivity
+import com.rubenquadros.yourplaces.data.local.database.PlacesDatabase
 import com.rubenquadros.yourplaces.di.*
+import com.rubenquadros.yourplaces.di.module.ApplicationModule
 import com.rubenquadros.yourplaces.factory.ViewModelFactory
 import com.rubenquadros.yourplaces.utils.ApplicationConstants
 import com.squareup.okhttp.mockwebserver.MockResponse
@@ -12,13 +14,14 @@ import org.robolectric.Robolectric
 import java.io.File
 import javax.inject.Inject
 
+@Suppress("DEPRECATION")
 abstract class BaseTest {
 
-    lateinit var mockServer: MockWebServer
-    lateinit var testAppComponent: TestAppComponent
+    private lateinit var mockServer: MockWebServer
+    private lateinit var testAppComponent: TestAppComponent
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelFactory
+    @Inject lateinit var viewModelFactory: ViewModelFactory
+    @Inject lateinit var placesDatabase: PlacesDatabase
 
     @Before
     open fun setup() {
@@ -59,6 +62,7 @@ abstract class BaseTest {
     open fun configureDi() {
         this.testAppComponent = DaggerTestAppComponent.builder()
             .testApiModule(TestApiModule(if (isMockServerEnabled()) mockServer.url("/").toString() else ApplicationConstants.BASE_URL))
+            .applicationModule(ApplicationModule(Robolectric.setupActivity(FragmentActivity::class.java).application))
             .testDbModule(TestDbModule(Robolectric.setupActivity(FragmentActivity::class.java).application))
             .testRxJavaModule(TestRxJavaModule())
             .build()

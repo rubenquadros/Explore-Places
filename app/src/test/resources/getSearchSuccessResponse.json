@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "code": 200,
+    "requestId": "5d71d5b223bb8e0038be3dd3"
+  },
+  "response": {
+    "venues": [
+      {
+        "id": "4be43b12cf200f47f6a3113c",
+        "name": "Anjappar",
+        "contact": {},
+        "location": {
+          "address": "Intermediate Ring Road",
+          "crossStreet": "Koramangala",
+          "lat": 12.932162461291599,
+          "lng": 77.62288892012221,
+          "labeledLatLngs": [
+            {
+              "label": "display",
+              "lat": 12.932162461291599,
+              "lng": 77.62288892012221
+            }
+          ],
+          "cc": "IN",
+          "city": "Bangalore",
+          "state": "Karnātaka",
+          "country": "India",
+          "formattedAddress": [
+            "Intermediate Ring Road (Koramangala)",
+            "Bangalore",
+            "Karnātaka",
+            "India"
+          ]
+        },
+        "categories": [
+          {
+            "id": "4bf58dd8d48988d10f941735",
+            "name": "Indian Restaurant",
+            "pluralName": "Indian Restaurants",
+            "shortName": "Indian",
+            "icon": {
+              "prefix": "https://ss3.4sqi.net/img/categories_v2/food/indian_",
+              "suffix": ".png"
+            },
+            "primary": true
+          }
+        ],
+        "verified": false,
+        "stats": {
+          "tipCount": 0,
+          "usersCount": 0,
+          "checkinsCount": 0,
+          "visitsCount": 0
+        },
+        "beenHere": {
+          "count": 0,
+          "lastCheckinExpiredAt": 0,
+          "marked": false,
+          "unconfirmedCount": 0
+        },
+        "hereNow": {
+          "count": 0,
+          "summary": "Nobody here",
+          "groups": []
+        },
+        "referralId": "v-1567741362",
+        "venueChains": [],
+        "hasPerk": false
+      }
+    ],
+    "confident": false,
+    "geocode": {
+      "what": "",
+      "where": "koramangala",
+      "feature": {
+        "cc": "IN",
+        "name": "Koramangala",
+        "displayName": "Koramangala, Tamil Nādu, India",
+        "matchedName": "Koramangala, Tamil Nādu, India",
+        "highlightedName": "<b>Koramangala</b>, Tamil Nādu, India",
+        "woeType": 7,
+        "id": "geonameid:6695463",
+        "longId": "72057594044623399",
+        "geometry": {
+          "center": {
+            "lat": 12.93204,
+            "lng": 77.6227
+          }
+        }
+      },
+      "parents": []
+    }
+  }
+}

@@ -10,4 +10,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="SearchTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:background">@color/colorWhite</item>
+        <item name="android:fontFamily">@font/product_sans_bold</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
 </resources>

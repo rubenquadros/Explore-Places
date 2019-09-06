@@ -13,6 +13,8 @@ interface PlacesApiService {
         @Query("ll", encoded = true) ll: String
     ): Observable<PlacesResponse>
 
-    @GET("venues/search?client_id=P2SV0T31WRBJACVARCNW55U13YSPRL2TA5OCZCX2AZXEU31B&client_secret=HUC02LLJTGZG2BZZS1LVA4D4LATJCCUBZQI5LOBJJSW5BVWX&v=20180323&near={place}&radius=1000")
-    fun searchNearByPlaces(): Observable<SearchPlacesResponse>
+    @GET("venues/search?client_id=P2SV0T31WRBJACVARCNW55U13YSPRL2TA5OCZCX2AZXEU31B&client_secret=HUC02LLJTGZG2BZZS1LVA4D4LATJCCUBZQI5LOBJJSW5BVWX&v=20180323&radius=1000")
+    fun searchNearByPlaces(
+        @Query("near") near: String
+    ): Observable<SearchPlacesResponse>
 }

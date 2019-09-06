@@ -1,9 +1,10 @@
 package com.rubenquadros.yourplaces.base
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import io.reactivex.disposables.CompositeDisposable
 
-abstract class BaseViewModel: ViewModel() {
+abstract class BaseViewModel(application: Application): AndroidViewModel(application) {
     protected var disposable: CompositeDisposable = CompositeDisposable()
 
     override fun onCleared() {
