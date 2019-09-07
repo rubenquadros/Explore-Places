@@ -2,7 +2,9 @@ package com.rubenquadros.yourplaces.view
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
@@ -19,6 +21,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import butterknife.BindView
 import butterknife.ButterKnife
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.common.api.PendingResult
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -29,20 +34,26 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.rubenquadros.yourplaces.R
 import com.rubenquadros.yourplaces.adapter.BtmShtRecViewAdapter
 import com.rubenquadros.yourplaces.base.BaseActivity
+import com.rubenquadros.yourplaces.callbacks.ILocationCallBack
 import com.rubenquadros.yourplaces.data.local.entity.PlacesEntity
 import com.rubenquadros.yourplaces.data.remote.model.nearbyplaces.PlacesResponse
 import com.rubenquadros.yourplaces.data.remote.model.searchplaces.SearchPlacesResponse
+import com.rubenquadros.yourplaces.service.LocationService
 import com.rubenquadros.yourplaces.utils.ApplicationConstants
 import com.rubenquadros.yourplaces.utils.ApplicationUtility
 import com.rubenquadros.yourplaces.viewmodel.PlacesViewModel
 
-class PlacesActivity : BaseActivity(), OnMapReadyCallback {
+@Suppress("NAME_SHADOWING")
+class PlacesActivity : BaseActivity(), OnMapReadyCallback, ILocationCallBack {
 
     private lateinit var placesViewModel: PlacesViewModel
     private lateinit var manager: LocationManager
     private lateinit var mMap: GoogleMap
     private lateinit var sheetBehavior: BottomSheetBehavior<LinearLayout>
     private lateinit var adapter: BtmShtRecViewAdapter
+    private lateinit var locationService: LocationService
+    private var latitude: Double? = 0.0
+    private var longitude: Double? = 0.0
 
     @BindView(R.id.parent) lateinit var rootLayout: CoordinatorLayout
     @BindView(R.id.progressBar) lateinit var mProgressBar: ProgressBar
@@ -63,7 +74,7 @@ class PlacesActivity : BaseActivity(), OnMapReadyCallback {
         this.observeData()
         this.setupSearch()
         this.setupBottomSheet()
-        this.getPlaces()
+        //this.getPlaces()
     }
 
     private fun setupViewModel() {
@@ -106,8 +117,10 @@ class PlacesActivity : BaseActivity(), OnMapReadyCallback {
         mRecyclerView.layoutManager = layoutManager
     }
 
-    private fun getPlaces() {
-        this.placesViewModel.setLatLng("12.95,77.55")
+    private fun getPlaces(latitude: Double?, longitude: Double?) {
+        this.latitude = latitude
+        this.longitude = longitude
+        this.placesViewModel.setLatLng(String.format("%f", latitude)+ "," + String.format("%f", longitude))
         this.placesViewModel.getNearbyPlaces()
     }
 
@@ -119,7 +132,7 @@ class PlacesActivity : BaseActivity(), OnMapReadyCallback {
             this.placesViewModel.savePlaces(placesResponse)
             mMap.clear()
             mMap.addMarker(MarkerOptions()
-                .position(LatLng(12.95,77.55))
+                .position(LatLng(this.latitude!!,this.longitude!!))
                 .anchor(0.5f, 0.5f)
                 .draggable(false)
                 .icon(ApplicationUtility.bitmapDescriptorFromVector(this, R.drawable.ic_pin_drop_black_24dp))
@@ -131,8 +144,8 @@ class PlacesActivity : BaseActivity(), OnMapReadyCallback {
             }
             adapter = BtmShtRecViewAdapter(placesResponse, null, null)
             mRecyclerView.adapter = adapter
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(12.95, 77.55)))
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(15F))
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(LatLng(this.latitude!!, this.longitude!!)))
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(16F))
         }
     }
 
@@ -237,6 +250,7 @@ class PlacesActivity : BaseActivity(), OnMapReadyCallback {
                     ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), ApplicationConstants.REQUEST_CODE_GPS)
             }else {
+                locationService.getCurrentLocation()
                 //placesViewModel.getCurrentLocation()
             }
         }else {
@@ -244,13 +258,10 @@ class PlacesActivity : BaseActivity(), OnMapReadyCallback {
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), ApplicationConstants.REQUEST_CODE_GPS)
             }else {
+                locationService.getCurrentLocation()
                //placesViewModel.getCurrentLocation()
             }
         }
-    }
-
-    private fun enableGpsAndGetLocation() {
-        ApplicationUtility.showSnack(getString(R.string.err_search_place), rootLayout, getString(R.string.ok))
     }
 
     override fun onRequestPermissionsResult(
@@ -264,8 +275,23 @@ class PlacesActivity : BaseActivity(), OnMapReadyCallback {
                 if(grantResults.isEmpty() || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                     ApplicationUtility.showSnack(getString(R.string.allow_gps), rootLayout, getString(R.string.ok))
                 }else {
-
+                    locationService.getCurrentLocation()
+                    //placesViewModel.getCurrentLocation()
                 }
+            }
+        }
+    }
+
+    override fun onLocationFetched(location: Location?) {
+        this.getPlaces(location?.latitude, location?.longitude)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode){
+            ApplicationConstants.REQUEST_CHECK_SETTINGS_GPS -> {
+                locationService.onActivityResult(requestCode, resultCode, data)
+                //this.placesViewModel.onActivityResult(requestCode, resultCode, data)
             }
         }
     }
@@ -275,6 +301,47 @@ class PlacesActivity : BaseActivity(), OnMapReadyCallback {
         mMap.mapType = GoogleMap.MAP_TYPE_NORMAL
         mMap.uiSettings?.isCompassEnabled = true
         mMap.uiSettings?.isZoomGesturesEnabled = true
+        locationService = LocationService(application)
+        locationService.setLocationCallback(this)
         this.setupPermissions()
+    }
+
+    override fun checkGPS(
+        googleApiClient: GoogleApiClient,
+        locationSetting: LocationSettingsRequest.Builder,
+        locationRequest: LocationRequest,
+        locationListener: LocationListener
+    ) {
+        val result: PendingResult<LocationSettingsResult> = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, locationSetting.build())
+        result.setResultCallback { result ->
+            val status = result.status
+            when (status.statusCode) {
+                LocationSettingsStatusCodes.SUCCESS -> {
+                    // All location settings are satisfied.
+                    // You can initialize location requests here.
+                    val permissionLocation = ContextCompat
+                        .checkSelfPermission(this,
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                    if (permissionLocation == PackageManager.PERMISSION_GRANTED) {
+                        LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, locationListener)
+                    }
+                }
+                LocationSettingsStatusCodes.RESOLUTION_REQUIRED ->
+                    // Location settings are not satisfied.
+                    // But could be fixed by showing the user a dialog.
+                    try {
+                        // Show the dialog by calling startResolutionForResult(),
+                        // and check the result in onActivityResult().
+                        // Ask to turn on GPS automatically
+                        status.startResolutionForResult(this,
+                            ApplicationConstants.REQUEST_CHECK_SETTINGS_GPS)
+                    } catch (e: Exception) {
+                        // Ignore the error.
+                    }
+                LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE -> {}
+            }// Location settings are not satisfied. However, we have no way to fix the
+            // settings so we won't show the dialog.
+            //finish();
+        }
     }
 }

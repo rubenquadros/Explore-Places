@@ -1,6 +1,8 @@
 package com.rubenquadros.yourplaces.viewmodel
 
 import android.app.Application
+import android.content.Intent
+import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.rubenquadros.yourplaces.base.BaseViewModel
@@ -28,7 +30,7 @@ constructor(private val placesRepository: PlacesRepository,
     private val searchError: MutableLiveData<String> = MutableLiveData()
     private var placesEntity = ArrayList<PlacesEntity>()
     private var dbResponse: MutableLiveData<List<PlacesEntity>> = MutableLiveData()
-    private lateinit var query: String
+    private lateinit var locationService: LocationService
 
     fun getNearbyPlaces() {
         placesResponse.value = null
@@ -60,10 +62,14 @@ constructor(private val placesRepository: PlacesRepository,
 
     fun getSearchErrorResponse() = searchError
 
-    fun getCurrentLocation() {
-        val locationService = LocationService(mApplication)
-        locationService.getCurrentLocation()
-    }
+//    fun getCurrentLocation(){
+//        locationService = LocationService()
+//        locationService.getCurrentLocation()
+//    }
+//
+//    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        locationService.onActivityResult(requestCode, resultCode, data)
+//    }
 
     fun deletePlaces() {
         this.placesRepository.deletePlaces()
