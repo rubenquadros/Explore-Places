@@ -55,21 +55,12 @@ constructor(private val placesRepository: PlacesRepository,
             .doOnSubscribe { isLoading.value = true }
             .doOnComplete { isLoading.value = false }
             .doOnError { isLoading.value = false }
-            .subscribe({ resources -> getSearchPlacesResponse()!!.postValue(resources) }, { resources-> if(searchResponse!!.value == null) getSearchErrorResponse().postValue(ApplicationConstants.ERROR) else getSearchErrorResponse().postValue(resources.message)}))
+            .subscribe({ resources -> getSearchPlacesResponse()!!.postValue(resources) }, { resources-> if(searchResponse!!.value != null) getSearchErrorResponse().postValue(resources.message) else getSearchErrorResponse().postValue("")}))
     }
 
     fun getSearchPlacesResponse() = searchResponse
 
     fun getSearchErrorResponse() = searchError
-
-//    fun getCurrentLocation(){
-//        locationService = LocationService()
-//        locationService.getCurrentLocation()
-//    }
-//
-//    fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        locationService.onActivityResult(requestCode, resultCode, data)
-//    }
 
     fun deletePlaces() {
         this.placesRepository.deletePlaces()

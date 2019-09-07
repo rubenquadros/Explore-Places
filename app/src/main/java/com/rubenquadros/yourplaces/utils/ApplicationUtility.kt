@@ -34,10 +34,6 @@ class ApplicationUtility {
             alertDialog.show()
         }
 
-        fun showToast(context: Context, message: String) {
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-        }
-
         fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor? {
             return ContextCompat.getDrawable(context, vectorResId)?.run {
                 setBounds(0, 0, intrinsicWidth, intrinsicHeight)

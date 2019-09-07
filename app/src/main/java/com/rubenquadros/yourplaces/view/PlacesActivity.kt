@@ -201,7 +201,7 @@ class PlacesActivity : BaseActivity(), OnMapReadyCallback, ILocationCallBack {
 
     private fun handleSearchError(error: String) {
         shouldShowProgress(false)
-        if(error == ApplicationConstants.ERROR) {
+        if(error.isEmpty()) {
             ApplicationUtility.showDialog(
                 this, getString(R.string.err_search_place_title),
                 getString(R.string.err_search_place), getString(R.string.ok)

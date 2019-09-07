@@ -29,13 +29,18 @@ android {
                 arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
             }
         }
+        applicationVariants.all { variant ->
+            variant.outputs.all {
+                def appName="yourplaces"
+                outputFileName = "${appName}_${variant.buildType.name}_${variant.versionName}.${variant.versionCode}_${new Date().format("ddMMyyyy")}.apk"
+            }
+        }
     }
     dataBinding {
         enabled = true
     }
     buildTypes {
         release {
-            debuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
